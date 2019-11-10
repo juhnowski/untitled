@@ -4,7 +4,6 @@ from rest_framework import viewsets
 from app.serializers import UserSerializer, GroupSerializer, RequestSerializer, StopWordSerializer, WordSerializer, \
     TotalIndexSerializer, WordInRequestSerializer, WordPositionsInRequestSerializer, RequestResponseSerializer
 
-
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.

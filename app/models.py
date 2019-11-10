@@ -83,5 +83,13 @@ class RequestResponse(models.Model):
     """
         Class for responses proposals of similar requests
     """
-    request = models.ForeignKey(Request, on_delete=models.CASCADE)
-    # proposal = models.ForeignKey(Request, on_delete=models.CASCADE)
+    request = models.ForeignKey(Request,
+                                related_name='request1_request_id',
+                                on_delete=models.CASCADE)
+
+    proposal = models.ForeignKey(Request,
+                                 related_name='proposal_request_id',
+                                 on_delete=models.CASCADE,
+                                 default=None,
+                                 blank=True,
+                                 null=True)

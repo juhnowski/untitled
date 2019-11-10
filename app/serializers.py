@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from app.models import Request, StopWord, RequestResponse, TotalIndex, WordInRequest, WordPositionsInRequest, Word
-
+from app.models import Request, StopWord, TotalIndex, WordInRequest, WordPositionsInRequest, Word, RequestResponse
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
