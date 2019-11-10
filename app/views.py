@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User, Group
-from app.models import Request
+from app.models import Request, StopWord, Word, TotalIndex, WordInRequest, WordPositionsInRequest, RequestResponse
 from rest_framework import viewsets
-from app.serializers import UserSerializer, GroupSerializer, RequestSerializer
+from app.serializers import UserSerializer, GroupSerializer, RequestSerializer, StopWordSerializer, WordSerializer, \
+    TotalIndexSerializer, WordInRequestSerializer, WordPositionsInRequestSerializer, RequestResponseSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -26,3 +27,51 @@ class RequestViewSet(viewsets.ModelViewSet):
     """
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
+
+
+class StopWordViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows stop words to be viewed or edited.
+    """
+    queryset = StopWord.objects.all()
+    serializer_class = StopWordSerializer
+
+
+class WordViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows words from all requests to be viewed or edited.
+    """
+    queryset = Word.objects.all()
+    serializer_class = WordSerializer
+
+
+class TotalIndexViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows words total index to be viewed or edited.
+    """
+    queryset = TotalIndex.objects.all()
+    serializer_class = TotalIndexSerializer
+
+
+class WordInRequestViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows words in request to be viewed or edited.
+    """
+    queryset = WordInRequest.objects.all()
+    serializer_class = WordInRequestSerializer
+
+
+class WordPositionsInRequestViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows word position in request to be viewed or edited.
+    """
+    queryset = WordPositionsInRequest.objects.all()
+    serializer_class = WordPositionsInRequestSerializer
+
+
+class RequestResponseViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows word position in request to be viewed or edited.
+    """
+    queryset = RequestResponse.objects.all()
+    serializer_class = RequestResponseSerializer
