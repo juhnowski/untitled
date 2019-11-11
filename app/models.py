@@ -2,9 +2,6 @@ import re
 from django.db import models, transaction
 import hashlib
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 
 class Request(models.Model):
 	"""
@@ -38,8 +35,17 @@ class Request(models.Model):
 		super(Request, self).save(*args, **kwargs)
 
 		words = self.original.split()
+
 		position_idx = 0
 		for w in words:
+
+			try:
+				if StopWord.objects.get(word=w):
+					print(f'{w=} was skiped')
+					continue
+			except:
+				pass
+
 			the_word = Word(word=w)
 			the_word.save()
 			total_index = TotalIndex(word=the_word)
@@ -83,38 +89,6 @@ class Word(models.Model):
 		pattern = re.compile('[\W_]+')
 		self.word = pattern.sub(' ', utf8s.lower())
 		super(Word, self).save(*args, **kwargs)
-
-# @receiver(post_save, sender=Request)
-# def create_word(sender, instance, created, **kwargs):
-# 	if created:
-#
-# 		words = instance.original.split()
-# 		position_idx = 0
-# 		for w in words:
-# 			# the_word = Word.objects.create(word=w)
-# 			# the_word.save()
-# 			the_word = StopWord(word=w)
-# 			the_word.save()
-# 			print("-----------create_word-------------------")
-# 			print(w)
-# 			print(the_word.id)
-# 			print("------------------------------")
-#
-#
-# @receiver(post_save, sender=Request)
-# def save_word(sender, instance, **kwargs):
-#
-# 	words = instance.original.split()
-# 	position_idx = 0
-# 	for w in words:
-# 		# the_word = Word.objects.create(word=w)
-# 		# the_word.save()
-# 		the_word = StopWord(word=w)
-# 		the_word.save()
-# 		print("------------save_word------------------")
-# 		print(w)
-# 		print(the_word.id)
-# 		print("------------------------------")
 
 
 class StopWord(models.Model):
