@@ -9,6 +9,7 @@
 
 # Требования
 - Python 3.8.0
+- Django 2.2.7
 - Postgre SQL с БД:
     -	'NAME': 'postgres',
 	-	'USER': 'postgres',
