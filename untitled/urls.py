@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
+
 from app import views
 
 router = routers.DefaultRouter()
@@ -14,7 +15,6 @@ router.register(r'totalindex', views.TotalIndexViewSet)
 router.register(r'wordinrequest', views.WordInRequestViewSet)
 router.register(r'wordpositionsinrequest', views.WordPositionsInRequestViewSet)
 router.register(r'requestresponse', views.RequestResponseViewSet)
-
 
 schema_view = get_swagger_view(title='Test App API')
 
