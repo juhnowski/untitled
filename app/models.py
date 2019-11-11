@@ -28,7 +28,6 @@ class Request(models.Model):
 		null=True
 	)
 
-
 	def save(self, *args, **kwargs):
 		self.purified = self.original
 		pattern = re.compile('[\W_]+')
@@ -46,19 +45,23 @@ class Request(models.Model):
 			total_index = TotalIndex(word=the_word)
 			total_index.save()
 
-			word_in_request = WordInRequest(totalIndex=total_index, request_id =self.id)
+			word_in_request = WordInRequest(totalIndex=total_index, request_id=self.id)
 			word_in_request.save()
 
 			word_positions_in_request = WordPositionsInRequest(position=position_idx, wordInRequest=word_in_request)
 			word_positions_in_request.save()
 
-			request_response = RequestResponse(request_id=self.id, proposal_id=self.id)
-			request_response.save()
+			try:
+				ti = TotalIndex.objects.get(word=w)
+				wir = WordInRequest.objects.get(total_index=ti)
+				for wi in wir:
+					request_response = RequestResponse(request_id=self.id, proposal=wi.request)
+					request_response.save()
+			except:
+				request_response = RequestResponse(request_id=self.id, proposal_id=self.id)
+				request_response.save()
 
 			position_idx += 1
-
-
-
 
 
 class Word(models.Model):
@@ -81,37 +84,37 @@ class Word(models.Model):
 		self.word = pattern.sub(' ', utf8s.lower())
 		super(Word, self).save(*args, **kwargs)
 
-	# @receiver(post_save, sender=Request)
-	# def create_word(sender, instance, created, **kwargs):
-	# 	if created:
-	#
-	# 		words = instance.original.split()
-	# 		position_idx = 0
-	# 		for w in words:
-	# 			# the_word = Word.objects.create(word=w)
-	# 			# the_word.save()
-	# 			the_word = StopWord(word=w)
-	# 			the_word.save()
-	# 			print("-----------create_word-------------------")
-	# 			print(w)
-	# 			print(the_word.id)
-	# 			print("------------------------------")
-	#
-	#
-	# @receiver(post_save, sender=Request)
-	# def save_word(sender, instance, **kwargs):
-	#
-	# 	words = instance.original.split()
-	# 	position_idx = 0
-	# 	for w in words:
-	# 		# the_word = Word.objects.create(word=w)
-	# 		# the_word.save()
-	# 		the_word = StopWord(word=w)
-	# 		the_word.save()
-	# 		print("------------save_word------------------")
-	# 		print(w)
-	# 		print(the_word.id)
-	# 		print("------------------------------")
+# @receiver(post_save, sender=Request)
+# def create_word(sender, instance, created, **kwargs):
+# 	if created:
+#
+# 		words = instance.original.split()
+# 		position_idx = 0
+# 		for w in words:
+# 			# the_word = Word.objects.create(word=w)
+# 			# the_word.save()
+# 			the_word = StopWord(word=w)
+# 			the_word.save()
+# 			print("-----------create_word-------------------")
+# 			print(w)
+# 			print(the_word.id)
+# 			print("------------------------------")
+#
+#
+# @receiver(post_save, sender=Request)
+# def save_word(sender, instance, **kwargs):
+#
+# 	words = instance.original.split()
+# 	position_idx = 0
+# 	for w in words:
+# 		# the_word = Word.objects.create(word=w)
+# 		# the_word.save()
+# 		the_word = StopWord(word=w)
+# 		the_word.save()
+# 		print("------------save_word------------------")
+# 		print(w)
+# 		print(the_word.id)
+# 		print("------------------------------")
 
 
 class StopWord(models.Model):
